@@ -10,6 +10,8 @@ class Array
   # :headers => Humanized name of column will be used as header by default;
   #             You can specify here a list of headers that must be used instead of default ones
   # :title   => name of workbook
+  # :author  => name of author
+  # :company => name of company
   #
   # Example:
   #
@@ -75,9 +77,9 @@ class Array
  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
  xmlns:html="http://www.w3.org/TR/REC-html40">
  <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
-  <Author>baligam</Author>
-  <LastAuthor>baligam</LastAuthor>
-  <Company>baligam</Company>
+  <Author>#{options[:author] || 'Unknown'}</Author>
+  <LastAuthor>#{options[:author] || 'Unknown'}</LastAuthor>
+  <Company>#{options[:company] || 'Unknown'}</Company>
   <Created>#{time_now.strftime('%Y-%m-%dT%H:%M:%SZ')}</Created>
   <LastSaved>#{time_now.strftime('%Y-%m-%dT%H:%M:%SZ')}</LastSaved>
  </DocumentProperties>
