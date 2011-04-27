@@ -1,5 +1,4 @@
 class Array
-  ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS[:excel]='%Y-%m-%dT%H:%M:%SZ'
 
   # Options:
   #
@@ -79,8 +78,8 @@ class Array
   <Author>baligam</Author>
   <LastAuthor>baligam</LastAuthor>
   <Company>baligam</Company>
-  <Created>#{time_now.to_s(:excel)}</Created>
-  <LastSaved>#{time_now.to_s(:excel)}</LastSaved>
+  <Created>#{time_now.strftime('%Y-%m-%dT%H:%M:%SZ')}</Created>
+  <LastSaved>#{time_now.strftime('%Y-%m-%dT%H:%M:%SZ')}</LastSaved>
  </DocumentProperties>
  <Styles>
   <Style ss:ID="Default" ss:Name="Normal">
