@@ -99,7 +99,7 @@ class Array
   </Style>
  </Styles>
  <Worksheet ss:Name="#{title}">
-  <Table ss:ExpandedColumnCount="#{columns.count}" ss:ExpandedRowCount="#{self.count + 1}" x:FullColumns="1" x:FullRows="1" ss:DefaultRowHeight="15">
+  <Table ss:ExpandedColumnCount="#{columns.length}" ss:ExpandedRowCount="#{self.length + 1}" x:FullColumns="1" x:FullRows="1" ss:DefaultRowHeight="15">
    #{ col_defs.join("\n") }
    <Row>#{ headers.join("\n") }</Row>
     #{ body.join("\n") }
