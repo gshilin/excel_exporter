@@ -1,3 +1,29 @@
 = ExcelExporter
 
+  Options:
+  
+  :only => only those columns will be exported
+  :except => all columns except these ones will be exported
+  Note: only one of the above options can be used at the same time
+  
+  :methods => list of columns to be exported that don't correspond to DB columns
+  :headers => Humanized name of column will be used as header by default;
+  You can specify here a list of headers that must be used instead of default ones
+  :title => name of workbook
+  :author => name of author
+  :company => name of company
+  
+  Example:
+  
+  list = Purchase.purchases_by_product(id).all
+  fields = [:id, :username]
+  headers = {:id => 'שובר', :username => 'שם'}
+  
+  list.to_excel(
+    :title => "#{Time.now.strftime("%d-%m-%Y")}_#{id}",
+    :only => fields,
+    :headers => headers,
+    :types => {:product_id => 'Number', :user_id => 'Number', :price => 'Number'}
+  )
+
 This project rocks and uses MIT-LICENSE.
