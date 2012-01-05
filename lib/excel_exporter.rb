@@ -56,12 +56,13 @@ class Array
     }
 
     types = options[:types] || {}
+    coder = HTMLEntities.new
     
     body = self.map { |item|
       cols = columns.map { |colname|
         value = item.send(colname)
         type = colname == :id ? 'Number' : (types[colname] || 'String')
-        "<Cell><Data ss:Type='#{type}'>#{value}</Data></Cell>"
+        "<Cell><Data ss:Type='#{type}'>#{coder.encode(value)}</Data></Cell>"
       }
       "<Row>" + cols.join("\n") +"</Row>"
     }
