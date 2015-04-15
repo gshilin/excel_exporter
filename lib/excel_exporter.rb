@@ -115,7 +115,9 @@ class Array
   #        :headers => headers,
   #        :types => {:product_id => 'Number', :user_id => 'Number', :price => 'Number'}
   #    )
-
+  
+  require 'htmlentities'
+  
   def to_excel(options = {})
     return '' if self.empty?
 
