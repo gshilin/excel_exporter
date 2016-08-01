@@ -212,8 +212,6 @@ class Array
 
     time_now = Time.now
 
-    header_names = {}
-
     headers = columns.map do |column|
       "<Cell ss:StyleID='header'><Data ss:Type='String'>#{column.humanize}</Data></Cell>"
     end
@@ -222,19 +220,18 @@ class Array
       '<Column ss:Width="141"/>'
     }
 
-    types = {}
     coder = HTMLEntities.new
 
     body = self.map do |item|
       cols = columns.map { |colname|
         value = item[colname]
-        type = colname == :id ? 'Number' : (types[colname] || 'String')
+        type = colname == :id ? 'Number' : 'String'
         "<Cell><Data ss:Type='#{type}'>#{coder.encode(value)}</Data></Cell>"
       }
-      "<Row>" + cols.join("\n") +"</Row>"
+      '<Row>' + cols.join("\n") +'</Row>'
     end
 
-    title = "#{time_now.strftime("%d-%m-%Y")}_#{options[:id]}"
+    title = "#{time_now.strftime('%d-%m-%Y')}"
 
     <<-OUTPUT
 <?xml version="1.0"?>
@@ -245,9 +242,9 @@ class Array
  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
  xmlns:html="http://www.w3.org/TR/REC-html40">
  <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
-  <Author>#{options[:author] || 'Unknown'}</Author>
-  <LastAuthor>#{options[:author] || 'Unknown'}</LastAuthor>
-  <Company>#{options[:company] || 'Unknown'}</Company>
+  <Author>#{'Unknown'}</Author>
+  <LastAuthor>#{'Unknown'}</LastAuthor>
+  <Company>#{'Unknown'}</Company>
   <Created>#{time_now.strftime('%Y-%m-%dT%H:%M:%SZ')}</Created>
   <LastSaved>#{time_now.strftime('%Y-%m-%dT%H:%M:%SZ')}</LastSaved>
  </DocumentProperties>
