@@ -213,7 +213,7 @@ class Array
     time_now = Time.now
 
     headers = columns.map do |column|
-      "<Cell ss:StyleID='header'><Data ss:Type='String'>#{column.humanize}</Data></Cell>"
+      "<Cell ss:StyleID='header'><Data ss:Type='String'>#{column.to_s.humanize}</Data></Cell>"
     end
 
     col_defs = columns.map { |column|
