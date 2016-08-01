@@ -227,7 +227,7 @@ class Array
 
     body = self.map do |item|
       cols = columns.map { |colname|
-        value = item.send(colname)
+        value = item[colname]
         type = colname == :id ? 'Number' : (types[colname] || 'String')
         "<Cell><Data ss:Type='#{type}'>#{coder.encode(value)}</Data></Cell>"
       }
