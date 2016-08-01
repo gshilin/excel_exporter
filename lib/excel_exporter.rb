@@ -203,5 +203,78 @@ class Array
 
     output
   end
+
+	// Export from Hash, without ActiveRecord
+  def to_excel_hash(*columns)
+
+    return '' if self.empty?
+    return '' if columns.empty?
+
+    time_now = Time.now
+
+    header_names = {}
+
+    headers = columns.map do |column|
+      "<Cell ss:StyleID='header'><Data ss:Type='String'>#{column.humanize}</Data></Cell>"
+    end
+
+    col_defs = columns.map { |column|
+      '<Column ss:Width="141"/>'
+    }
+
+    types = {}
+    coder = HTMLEntities.new
+
+    body = self.map do |item|
+      cols = columns.map { |colname|
+        value = item.send(colname)
+        type = colname == :id ? 'Number' : (types[colname] || 'String')
+        "<Cell><Data ss:Type='#{type}'>#{coder.encode(value)}</Data></Cell>"
+      }
+      "<Row>" + cols.join("\n") +"</Row>"
+    end
+
+    title = "#{time_now.strftime("%d-%m-%Y")}_#{options[:id]}"
+
+    <<-OUTPUT
+<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+  <Author>#{options[:author] || 'Unknown'}</Author>
+  <LastAuthor>#{options[:author] || 'Unknown'}</LastAuthor>
+  <Company>#{options[:company] || 'Unknown'}</Company>
+  <Created>#{time_now.strftime('%Y-%m-%dT%H:%M:%SZ')}</Created>
+  <LastSaved>#{time_now.strftime('%Y-%m-%dT%H:%M:%SZ')}</LastSaved>
+ </DocumentProperties>
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Bottom"/>
+   <Borders/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="11" ss:Color="#000000"/>
+   <Interior/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="header">
+    <Alignment ss:Horizontal="Center"/>
+    <Font ss:Size="8" ss:Bold="1"/>
+    <Interior ss:Color="#d0d0d0" ss:Pattern="Solid"/>
+  </Style>
+ </Styles>
+ <Worksheet ss:Name="#{title}">
+  <Table ss:ExpandedColumnCount="#{columns.length}" ss:ExpandedRowCount="#{self.length + 1}" x:FullColumns="1" x:FullRows="1" ss:DefaultRowHeight="15">
+   #{ col_defs.join("\n") }
+   <Row>#{ headers.join("\n") }</Row>
+    #{ body.join("\n") }
+  </Table>
+ </Worksheet>
+</Workbook>
+    OUTPUT
+  end
 end
 	
