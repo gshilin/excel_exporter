@@ -204,7 +204,7 @@ class Array
     output
   end
 
-	// Export from Hash, without ActiveRecord
+	# Export from Hash, without ActiveRecord
   def to_excel_hash(*columns)
 
     return '' if self.empty?
